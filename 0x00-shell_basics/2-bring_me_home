@@ -1,2 +1,2 @@
-echo /root
+#!/bin/bash
 cd ~
