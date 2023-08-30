@@ -1,0 +1,2 @@
+#!/bin/bash
+ls -A1 | awk '{print $0"/"}' | sort -k1.1d,1 -k1.2n,1 -k1.3d,1 -t/ | tr '\n' ','
