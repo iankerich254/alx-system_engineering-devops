@@ -1,0 +1,60 @@
+New Components and Configuration:
+
+Additional Server:
+Purpose: To distribute the workload more effectively and increase redundancy.
+Role: This server can be used as either a web server, application server, or database server, depending on the requirements.
+
+HAProxy Load Balancer Cluster:
+Purpose: To ensure high availability and distribute traffic evenly across multiple servers.
+Role: The load balancer cluster will ensure that if one load balancer fails, the other can take over without disrupting service.
+Configuration: The load balancers will be configured in an active-active setup to balance the load and provide redundancy.
+
+Splitting Components:
+
+Web Server (Nginx):
+Purpose: To handle HTTP requests and serve static content.
+Role: Each web server will handle incoming requests, serve static files, and forward dynamic requests to the application server.
+
+Application Server:
+Purpose: To execute business logic and handle dynamic content.
+Role: Each application server will process requests, execute code, and interact with the database.
+
+Database Server (MySQL):
+Purpose: To store and manage data.
+Role: Each database server will handle database operations. In a master-slave setup, one server will handle writes (master), and the others will handle reads (slaves).
+
+Detailed Explanation of Each Element:
+
+Additional Server:
+Purpose: Adding another server helps distribute the load, ensuring that no single server is overwhelmed. This increases the overall capacity and reliability of the system.
+
+Load Balancer Cluster:
+Purpose: The HAProxy load balancer cluster ensures high availability and reliability. By having multiple load balancers, the system can continue to operate even if one load balancer fails.
+Active-Active Setup: Both load balancers actively distribute traffic, providing better load distribution and redundancy. In case one fails, the other can handle the traffic without any disruption.
+
+Splitting Components:
+
+Web Server (Nginx):
+Purpose: To handle static content and forward dynamic requests to the application server.
+Role: Each web server manages client connections and distributes requests to the appropriate application servers.
+
+Application Server:
+Purpose: To handle the business logic and dynamic content generation.
+Role: Each application server processes requests, interacts with the database, and generates responses.
+
+Database Server (MySQL):
+Purpose: To manage data storage and retrieval.
+Role: The database servers handle read and write operations. A master-slave setup can be used where the master handles writes and slaves handle reads, providing better performance and reliability.
+
+Issues and Considerations:
+
+SPOF (Single Point of Failure):
+Mitigation: The load balancer cluster and multiple servers for each component help eliminate single points of failure.
+
+Security:
+Considerations: Ensure firewalls are in place for each server, and SSL termination is handled properly to maintain secure communication.
+
+Monitoring:
+Purpose: To provide insights into the performance and health of each server.
+Tools: Monitoring clients should be installed on each server to collect data on CPU usage, memory usage, disk I/O, network traffic, and other critical metrics.
+Data Collection: Monitoring tools will collect and aggregate data to provide real-time alerts and insights.

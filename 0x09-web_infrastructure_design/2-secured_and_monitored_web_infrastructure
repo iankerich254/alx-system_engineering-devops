@@ -1,0 +1,99 @@
+Diagram and Explanation
+
+Diagram Components:
+
+DNS Server: Resolves www.foobar.com to 8.8.8.8.
+
+Client/User: Requests files/data from the web infrastructure.
+
+SSL Certificate: Enables encrypted traffic over HTTPS.
+
+Load Balancer: Distributes incoming traffic to multiple servers.
+
+Firewalls: Provides security by filtering incoming and outgoing traffic.
+
+Two Sets of Servers: Each set includes:
+
+Nginx Web Server
+Application Server
+Codebase
+MySQL Database
+Monitoring Client
+Sumologic Data Collector: Aggregates and collects monitoring data from various sources.
+
+Detailed Workflow:
+User Access:
+
+A user wants to access the website by entering www.foobar.com into their browser.
+
+DNS Resolution:
+The browser contacts the DNS server to resolve www.foobar.com to the IP address 8.8.8.8.
+
+HTTPS Request:
+The browser sends an HTTPS request to the load balancer at 8.8.8.8, utilizing the SSL certificate to ensure encrypted communication.
+
+Load Balancer (HAProxy):
+The load balancer receives the HTTPS request and decrypts it using the SSL certificate.
+The load balancer then distributes the traffic to one of the available Nginx web servers based on the configured distribution algorithm.
+
+Nginx Web Server:
+The chosen Nginx web server handles the HTTPS request.
+If the request is for static content, Nginx serves it directly.
+If the request requires dynamic content, Nginx forwards the request to the application server.
+
+Application Server:
+The application server processes the request, executes business logic, and interacts with the database if necessary.
+The application server uses the codebase (application files) to generate the required response.
+
+Database (MySQL):
+The application server queries the MySQL database for data.
+The MySQL database retrieves the requested data and sends it back to the application server.
+
+Response to User:
+The application server sends the processed data back to the Nginx web server.
+Nginx then sends the appropriate response back to the user's browser.
+
+Monitoring:
+Monitoring clients on each server collect data on server performance and health.
+The Sumologic data collector aggregates this data for analysis and alerts.
+
+Explanation of Additional Elements:
+
+Firewalls:
+Purpose: Firewalls filter incoming and outgoing traffic, providing a security barrier against unauthorized access and potential threats.
+Placement: One firewall is placed in front of the load balancer, and one in front of each set of servers.
+
+SSL Certificate:
+Purpose: Encrypts the traffic between the client and the server, ensuring data confidentiality and integrity.
+
+Monitoring Clients:
+Purpose: Collects data on server performance, health, and traffic, enabling real-time monitoring and alerting.
+Data Collection: Monitoring tools gather metrics such as CPU usage, memory usage, disk I/O, network traffic, and application-specific metrics.
+
+Specific Explanations:
+Firewalls:
+Purpose: To provide a security layer by allowing only legitimate traffic to reach the servers, preventing unauthorized access and attacks.
+
+HTTPS Traffic:
+Purpose: Encrypts data between the client and server, ensuring that sensitive information is protected from interception and tampering.
+
+Monitoring:
+Purpose: Provides visibility into the performance and health of the infrastructure, allowing for proactive issue detection and resolution.
+Data Collection: Monitoring tools like Sumologic collect data from various sources, aggregate it, and provide insights and alerts.
+
+Monitoring QPS:
+
+Steps:
+Set up the monitoring client to collect query per second (QPS) metrics from the web server.
+Configure the monitoring tool to visualize QPS data and set alerts for thresholds.
+
+Issues with This Infrastructure:
+
+Terminating SSL at the Load Balancer:
+Issue: Traffic between the load balancer and backend servers is not encrypted, potentially exposing data within the internal network.
+
+Single MySQL Server for Writes:
+Issue: Having only one MySQL server capable of accepting writes creates a single point of failure. If the primary server goes down, write operations will fail.
+
+Identical Server Components:
+Issue: Each server contains all components (web server, application server, database), leading to resource contention and potential inefficiencies. This setup can complicate scaling and maintenance.

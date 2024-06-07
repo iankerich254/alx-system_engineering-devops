@@ -1,0 +1,82 @@
+Diagram and Explanation
+
+Diagram Components:
+
+DNS Server: Resolves www.foobar.com to 8.8.8.8.
+Client/User: Requests files/data from the web infrastructure.
+Load Balancer (HAProxy): Distributes incoming traffic to multiple servers.
+Two Sets of Servers: Each set includes:
+Nginx Web Server
+Application Server
+Codebase
+MySQL Database
+
+Detailed Workflow:
+
+User Access:
+A user wants to access the website by entering www.foobar.com into their browser.
+
+DNS Resolution:
+The browser contacts the DNS server to resolve www.foobar.com to the IP address 8.8.8.8.
+
+HTTP Request:
+The browser sends an HTTP request to the load balancer at 8.8.8.8.
+
+Load Balancer (HAProxy):
+The load balancer receives the request and distributes it to one of the available Nginx web servers based on the configured distribution algorithm.
+
+Nginx Web Server:
+The chosen Nginx web server handles the HTTP request.
+If the request is for static content, Nginx serves it directly.
+If the request requires dynamic content, Nginx forwards the request to the application server.
+
+Application Server:
+The application server processes the request, executes business logic, and interacts with the database if necessary.
+The application server uses the codebase (application files) to generate the required response.
+
+Database (MySQL):
+The application server queries the MySQL database for data.
+The MySQL database retrieves the requested data and sends it back to the application server.
+
+Response to User:
+The application server sends the processed data back to the Nginx web server.
+Nginx then sends the appropriate response back to the user's browser.
+
+Explanation of Additional Elements:
+
+Additional Servers:
+Adding extra servers increases redundancy and improves the system's ability to handle a higher volume of traffic.
+
+Load Balancer (HAProxy):
+The load balancer distributes incoming traffic across multiple servers to prevent any single server from becoming overwhelmed. It helps in achieving high availability and fault tolerance.
+
+Distribution Algorithm for Load Balancer:
+Round-Robin Algorithm:
+The load balancer distributes incoming requests sequentially across all servers. This ensures an even distribution of load.
+Active-Active vs. Active-Passive Setup:
+
+Active-Active Setup:
+In an active-active setup, both servers are active and handle requests simultaneously. This setup provides better load distribution and redundancy.
+
+Active-Passive Setup:
+In an active-passive setup, one server is active and handles all requests, while the other server remains on standby. The passive server takes over only if the active server fails.
+
+Primary-Replica (Master-Slave) Database Cluster:
+
+Primary Node:
+The primary node (master) handles all write operations and propagates changes to the replica nodes.
+
+Replica Node:
+Replica nodes (slaves) handle read operations and replicate the data from the primary node. This setup improves read performance and provides data redundancy.
+
+Issues with This Infrastructure:
+
+Single Point of Failure (SPOF):
+The load balancer itself can be a single point of failure. If the load balancer goes down, the entire website becomes unavailable.
+
+Security Issues:
+No firewall: The infrastructure lacks protection against unauthorized access.
+No HTTPS: Communication is not encrypted, making it vulnerable to interception and attacks.
+
+No Monitoring:
+Without monitoring, it is difficult to detect and respond to performance issues, failures, or security breaches in real-time.

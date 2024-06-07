@@ -1,0 +1,56 @@
+Diagram and Explanation
+Diagram Components:
+
+DNS Server: Located at the top, pointing to the IP 8.8.8.8.
+Client/User: Interacts with the system, requesting files/data.
+Nginx Web Server: Receives requests from the client.
+Application Server: Processes requests forwarded by the Nginx web server.
+Codebase: The application files the application server uses.
+MySQL Database: Stores and retrieves data as requested by the application server.
+
+Detailed Workflow:
+
+User Access:
+
+A user wants to access the website by entering www.foobar.com into their browser.
+DNS Resolution:
+
+The browser contacts the DNS server to resolve www.foobar.com to the IP address 8.8.8.8.
+HTTP Request:
+
+The browser sends an HTTP request to the server at 8.8.8.8.
+Nginx Web Server:
+
+The Nginx web server receives the HTTP request from the user.
+If the request is for static content (HTML, CSS, JS), Nginx serves it directly.
+If the request requires dynamic content, Nginx forwards the request to the application server.
+Application Server:
+
+The application server processes the request, executes business logic, and interacts with the database if necessary.
+The application server uses the codebase (application files) to generate the required response.
+Database (MySQL):
+
+The application server queries the MySQL database for data.
+The MySQL database retrieves the requested data and sends it back to the application server.
+Response to User:
+
+The application server sends the processed data back to the Nginx web server.
+Nginx then sends the appropriate response back to the user's browser.
+Roles of Each Component:
+Server: Hosts the entire web infrastructure.
+Domain Name: foobar.com makes it easy for users to access the website instead of using an IP address.
+DNS Record: The www in www.foobar.com is a CNAME (Canonical Name) record pointing to the IP address 8.8.8.8.
+Web Server (Nginx): Handles incoming HTTP/HTTPS requests, serves static content, and forwards dynamic requests to the application server.
+Application Server: Runs the backend application, processes dynamic requests, and executes business logic.
+Database (MySQL): Stores and retrieves data for the application.
+
+Issues with This Infrastructure:
+
+Single Point of Failure (SPOF):
+If the server fails, the entire website becomes unavailable.
+
+Downtime During Maintenance:
+Updating the application or performing maintenance requires server downtime, causing temporary unavailability of the website.
+
+Scalability:
+A single server cannot efficiently handle high traffic loads. The setup lacks redundancy and load balancing, making it difficult to scale.
