@@ -1,23 +1,11 @@
-# 100-puppet_ssh_config.pp
-file { '/home/ubuntu/.ssh/config':
-  ensure  => file,
-  owner   => 'ubuntu',
-  group   => 'ubuntu',
-  mode    => '0600',
-  content => template('ssh_config.erb'),
-}
-
-file_line { 'Declare identity file':
-  path  => '/home/ubuntu/.ssh/config',
-  line  => '    IdentityFile ~/.ssh/school',
-  match => 'IdentityFile',
-  after => 'Host \*',
-}
-
+# set up your client SSH configuration file so that you can connect to a server without typing a password.
 file_line { 'Turn off passwd auth':
-  path  => '/home/ubuntu/.ssh/config',
-  line  => '    PasswordAuthentication no',
-  match => 'PasswordAuthentication',
-  after => 'Host \*',
-}
-
+  ensure => 'present',
+  path   => '/etc/ssh/ssh_config',
+  line   => '    PasswordAuthentication no',
+  }
+file_line { 'Declare identity file':
+  ensure => 'present',
+  path   => '/etc/ssh/ssh_config',
+  line   => '    IdentityFile ~/.ssh/school',
+  }
