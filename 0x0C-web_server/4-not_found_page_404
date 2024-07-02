@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# This script installs Nginx and configures a custom 404 error page
+
+# Update package list
+apt-get update -y
+
+# Install Nginx
+apt-get install nginx -y
+
+# Create a custom 404 error page
+echo "Ceci n'est pas une page" > /var/www/html/custom_404.html
+
+# Configure Nginx to use the custom 404 error page
+cat << EOF > /etc/nginx/sites-available/default
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
+
+    server_name _;
+
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+
+    error_page 404 /custom_404.html;
+    location = /custom_404.html {
+        internal;
+    }
+}
+EOF
+
+# Restart Nginx without using systemctl
+service nginx restart
+
