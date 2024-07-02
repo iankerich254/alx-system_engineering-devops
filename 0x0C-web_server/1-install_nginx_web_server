@@ -2,12 +2,15 @@
 # This script installs and configures Nginx on an Ubuntu server to display "Hello World!" at the root URL
 
 # Update package list and install Nginx
-apt-get update -y
-apt-get install nginx -y
+sudo apt-get update -y
+sudo apt-get install nginx -y
+
+# Change file ownership
+sudo chown -R ubuntu /var/www
 
 # Create an HTML file that contains "Hello World!"
 echo 'Hello World!' > /var/www/html/index.html
 
 # Restart Nginx without using systemctl
-service nginx restart
+sudo service nginx restart
 
