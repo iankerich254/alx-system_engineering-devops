@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# This script displays information about subdomains for a given domain.
+
+function get_subdomain_info {
+    local domain=$1
+    local subdomain=$2
+    local record=$(dig +short $subdomain.$domain)
+
+    if [[ -z $record ]]; then
+        echo "The subdomain $subdomain does not exist."
+    else
+        echo "The subdomain $subdomain is an A record and points to $record"
+    fi
+}
+
+domain=$1
+subdomain=$2
+
+if [[ -z $domain ]]; then
+    echo "Usage: $0 domain [subdomain]"
+    exit 1
+fi
+
+if [[ -z $subdomain ]]; then
+    get_subdomain_info $domain "www"
+    get_subdomain_info $domain "lb-01"
+    get_subdomain_info $domain "web-01"
+    get_subdomain_info $domain "web-02"
+else
+    get_subdomain_info $domain $subdomain
+fi
