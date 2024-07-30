@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""A script to export data in the CSV format for a given employee ID."""
 import csv
 import requests
 import sys
@@ -16,7 +17,8 @@ if __name__ == "__main__":
     username = user.get("username")
     filename = "{}.csv".format(employee_id)
 
-    with open(filename, mode='w', newline='') as file:
+    with open(filename, mode="w", newline="") as file:
         writer = csv.writer(file, quoting=csv.QUOTE_ALL)
         for task in todos:
-            writer.writerow([employee_id, username, task.get("completed"), task.get("title")])
+            writer.writerow([employee_id, username, task.get("completed"),
+                             task.get("title")])
