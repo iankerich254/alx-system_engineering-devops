@@ -1,44 +1,37 @@
 #!/usr/bin/env bash
-# This script installs Nginx and configures a 301 redirect for /redirect_me
+# This script installs Nginx, configures it to return "Hello World!" at the root URL, 
+# and sets up a 301 redirection for /redirect_me to a specified URL.
 
-# Update package list
-apt-get update -y
+# Update the package list and install Nginx
+sudo apt-get update -y
+sudo apt-get install nginx -y
 
-# Install Nginx
-apt-get install nginx -y
+# Ensure Nginx is running
+sudo service nginx start
 
-# Create the custom 404 error page
-echo "Ceci n'est pas une page" > /var/www/html/custom_404.html
+# Create a custom index.html with "Hello World!"
+echo "Hello World!" | sudo tee /var/www/html/index.html
 
-# Create the custom index.html
-echo "Hello World!" > /var/www/html/index.html
-
-# Configure Nginx to use the custom 404 error page and setup redirection
-cat << EOF > /etc/nginx/sites-available/default
+# Configure Nginx to redirect /redirect_me to a specified URL with a 301 status
+sudo tee /etc/nginx/sites-available/default > /dev/null << EOF
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
 
     root /var/www/html;
-    index index.html index.htm index.nginx-debian.html;
+    index index.html;
 
     server_name _;
+
+    location /redirect_me {
+        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+    }
 
     location / {
         try_files \$uri \$uri/ =404;
     }
-
-    location = /redirect_me {
-        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
-    }
-
-    error_page 404 /custom_404.html;
-    location = /custom_404.html {
-        internal;
-    }
 }
 EOF
 
-# Restart Nginx without using systemctl
-service nginx restart
-
+# Reload Nginx to apply changes
+sudo service nginx reload
