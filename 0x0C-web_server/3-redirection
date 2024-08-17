@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# This script installs Nginx, configures it to return "Hello World!" at the root URL, 
+# This script installs Nginx, configures it to return "Hello World!" at the root URL,
 # and sets up a 301 redirection for /redirect_me to a specified URL.
 
 # Update the package list and install Nginx
