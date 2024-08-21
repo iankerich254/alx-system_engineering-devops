@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Fixes Nginx to listen on port 80 for all IPv4 IPs
+apt-get install -y nginx
+sed -i 's/listen 80;/listen 0.0.0.0:80;/' /etc/nginx/sites-available/default
+nginx -g 'daemon off;'
